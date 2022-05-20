@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
 const Campground = require("./models/campground");
-
+//
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
     //useCreateIndex: true, can take this out in newer versions of mongoose
