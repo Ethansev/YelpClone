@@ -17,12 +17,16 @@ db.once("open", () => {
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () =>{
-    await Campground.deleteMany({});
+    await Campground.deleteMany({}); //completely empties out the database so we can reseed
     for(let i = 0;i < 50; i++){
         const random1000 = Math.floor(Math.random() * 1000);
+        const price = Math.floor(Math.random()*20)+10;
         const camp = new Campground({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
-            title: `${sample(descriptors)} ${sample(places)}`
+            title: `${sample(descriptors)} ${sample(places)}`,
+            image: 'https://source.unsplash.com/collection/483251',
+            description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet error deleniti sapiente delectus ad explicabo illum fugit dolorem, asperiores neque? Ullam nesciunt illo dignissimos inventore nihil repellendus, molestiae necessitatibus quo?',
+            price
         })
         await camp.save();
     }
