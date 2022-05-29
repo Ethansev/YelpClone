@@ -20,7 +20,7 @@ const CampgroundSchema = new Schema({
 CampgroundSchema.post('findOneAndDelete', async function(doc) { //anytime a campground is deleted, all of the related reviews are also deleted
     console.log(doc);
     if(doc){ //deletes all reviews where their id field is in the document.reviews array 
-        await Review.deleteMany({
+        await review.deleteMany({
             _id: {
                 $in: doc.reviews
             }

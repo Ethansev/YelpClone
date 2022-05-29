@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const ejsMate = require('ejs-mate');
-const { campgroundSchema,reviewSchema } = require('./schemas.js'); //eventually want to add more schemas so we're destrucuring
-const catchAsync = require('./utils/catchAsync')
-const ExpressError = require('./utils/ExpressError')
+const session = require('express-session');
+const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
-const Campground = require('./models/campground');
-const Review = require('./models/review');
+
+const campgrounds = require('./routes/campgrounds');
+const reviews = require('./routes/reviews');
 //
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -29,88 +29,26 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded( {extended:true} ));
 app.use(methodOverride('_method'));
+app.use(express.static(path.join(__dirname, 'public'))); //serves the public directory
 
-const validateCampground = (req, res, next) => {
-    //middleware function for server-side validations using Joi
-    const { error } = campgroundSchema.validate(req.body); //imported from schemas.js
-    if(error){
-        const msg = error.details.map(el => el.message).join(','); //we're taking the details array in Object and mapping over it to give us a new string
-        throw new ExpressError(msg, 400);
-    }else{
-        next();
+const sessionConfig = {
+    secret:'thisshouldbeabettersecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true, //for security so client-side can't alter cookies
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //date.now() returns in milliseconds so we do this to expire in 1 week
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+app.use(session(sessionConfig));
 
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if(error){
-        const msg = error.details.map(el => el.message).join(','); //we're taking the details array in Object and mapping over it to give us a new string
-        throw new ExpressError(msg, 400);
-    }else{
-        next();
-    }
-}
+app.use('/campgrounds', campgrounds);
+app.use('/campgrounds/:id/reviews', reviews); //need to use mergeParams: true in reviews.js if we need access to this id
 
 app.get('/', (req, res ) => {
     res.render('home')
 });
-
-app.get('/campgrounds', catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render('campgrounds/index', { campgrounds });
-}));
-
-app.get('/campgrounds/new', (req, res) => {
-    res.render('campgrounds/new');
-});
-
-app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
-    //if(!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
-    const campground = new Campground(req.body.campground);
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`) //redirects us back to the campground at id after creating a new one. 
-    
-}))
-
-app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate('reviews');
-    res.render('campgrounds/show', { campground });
-}));
-
-app.get('/campgrounds/:id/edit', catchAsync(async (req,res) => {
-    const campground = await Campground.findById(req.params.id)
-    res.render('campgrounds/edit', { campground });
-}));
-
-app.put('/campgrounds/:id', validateCampground, catchAsync(async(req, res) => {
-    //we're updating a campground at the specific id in the database and sending it as a put request 
-    const { id } = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) //we're spreading the object
-    res.redirect(`/campgrounds/${campground._id}`)
-}));
-
-app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
-    //deletes the object from our campgrounds collection
-    const { id } = req.params;
-    await Campground.findByIdAndDelete(id);
-    res.redirect('/campgrounds');
-}));
-
-app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id);
-    const review = new Review(req.body.review);
-    campground.reviews.push(review);
-    await review.save();
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`);
-}))
-
-app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async (req, res) => { //we're getting rid of the reviews from 2 collections
-    const { id, reviewId } = req.params;
-    await Campground.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/campgrounds/${id}`);
-}));
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
