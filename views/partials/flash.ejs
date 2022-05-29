@@ -1,0 +1,13 @@
+<% if(success && success.length) { %> <!-- array length of 0 is falsy. we're checking if success flash exists -->
+    <div class="alert alert-success alert-dismissible fade show" role="alert"> <!-- we add roles for accessibility purposes -->
+        <%= success %> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+
+<% if(error && error.length) { %> <!-- we're checking if error flash exists -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error %> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
