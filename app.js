@@ -55,7 +55,7 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser()); //serialization is how we store the user in the session
-passport.deserializeUser(User.deserializeUser()); //
+passport.deserializeUser(User.deserializeUser()); 
 
 app.use((req, res, next) => { //flash message is accessed to templates automatically on every request. 
     res.locals.currentUser = req.user; //all of our templates now have access to currentUser

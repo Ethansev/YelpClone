@@ -14,6 +14,8 @@ db.once("open", () => {
     console.log("Database connected!");
 });
 
+//This file is used to populate our campgrounds collection for development 
+
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () =>{
@@ -22,6 +24,7 @@ const seedDB = async () =>{
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random()*20)+10;
         const camp = new Campground({
+            author: '6295f9d59a4a95355ea91ee4',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             image: 'https://source.unsplash.com/collection/483251',
