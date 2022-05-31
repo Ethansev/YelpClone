@@ -6,10 +6,14 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews');
-//
+const userRoutes = require('./routes/users');
+const campgroundRoutes = require('./routes/campgrounds');
+const reviewRoutes = require('./routes/reviews');
+
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
     //useCreateIndex: true, can take this out in newer versions of mongoose
@@ -45,14 +49,24 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+//initialize() initializes Passport (wow) and session() allows for persistent login sessions
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser()); //serialization is how we store the user in the session
+passport.deserializeUser(User.deserializeUser()); //
+
 app.use((req, res, next) => { //flash message is accessed to templates automatically on every request. 
+    res.locals.currentUser = req.user; //all of our templates now have access to currentUser
     res.locals.success = req.flash('success'); 
     res.locals.error = req.flash('error');
     next();
 })
 
-app.use('/campgrounds', campgrounds);
-app.use('/campgrounds/:id/reviews', reviews); //need to use mergeParams: true in reviews.js if we need access to this id
+app.use('/', userRoutes);
+app.use('/campgrounds', campgroundRoutes);
+app.use('/campgrounds/:id/reviews', reviewRoutes); //need to use mergeParams: true in reviews.js if we need access to this id
 
 app.get('/', (req, res ) => {
     res.render('home')
