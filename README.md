@@ -1,16 +1,16 @@
 # YelpClone
- Web App that demonstrates CRUD, user authentication, and full-stack deployment.
+ Web application that demonstrates CRUD via MongoDB, user authentication, and full-stack deployment via AWS Mongo Atlas & Heroku. Users can register, login, add new campgrounds, edit their existing campgrounds, leave reviews, and delete their own content. 
 
 ## Live Demo (coming soon)
 
 ### Technologies used
-Front-end Technologies: Bootstrap, ejs\
-Back-end Technologies: Node.js, Express.js, MongoDB, NPM\
-Deployment: AWS Mongo Atlas, Heroku
+**Front-end Technologies**: Bootstrap, ejs\
+**Back-end Technologies**: Node.js, Express.js, MongoDB, NPM\
+**Deployment**: AWS Mongo Atlas, Heroku
 
 ### Future plans
-- [ ] 
-- [ ] 
+- [ ] Search Funcionality
+- [ ] UI Design (mainly for aesthetics and responsiveness) 
 - [ ] 
 
 
@@ -18,7 +18,5 @@ The database is currently being hosted locally, but I will move it to the cloud 
 
 <!-- 
 Purpose 
-Features 
-
-
+Features
 >
