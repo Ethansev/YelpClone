@@ -1,4 +1,5 @@
 const Campground = require('../models/campground');
+const { cloudinary } = require('../cloudinary');
 
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({});
@@ -46,10 +47,22 @@ module.exports.renderEditForm = async (req,res) => {
 };
 
 module.exports.updateCampground = async(req, res) => {
-    //we're updating a campground at the specific id in the database and sending it as a put request 
-    //first checking if the user is authorized to make an update by comparing the .author with the req.user.id
+    //we're sending a put request to update a campground at the specific id in the database
     const { id } = req.params;
+
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) //we're spreading the object
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    campground.images.push(...imgs); //use push so we don't overwrite existing data
+    //^ doesn't pass in an array, but takes the data in the array and passes it to push
+    if(req.body.deleteImages){
+        for(let filename of req.body.deleteImages){
+            await cloudinary.uploader.destroy(filename); //deletes the image file from cloudinary
+        }
+        await campground.updateOne({$pull: {images: {filename: {$in: req.body.deleteImages}}}});
+        //update our campground where we pull from the images array, all images where the filename of the images are in the req.body.deleteImages array. 
+        console.log(campground);
+    }
+    campground.save();
     req.flash('success', 'Successfuly updated campground!');
     res.redirect(`/campgrounds/${campground._id}`)
 };

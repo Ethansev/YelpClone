@@ -18,7 +18,11 @@
                     Looks good!
                 </div>
             </div>
-            <input type="file" name="image" id="" multiple>
+            <div class="mb-3 custom-file"> <!-- custom-file class replaces the label with the name of the files being uploaded on the client-side (script is in boilerplate)-->
+                <label for="image" class="form-label custom-file-label"></label>
+                <input class="form-control custom-file-label" type="file" id="image" name="image" multiple>
+            </div>
+            <!-- <input type="file" name="image" id="" multiple> //this is the old file input -->
             <!-- <div class="mb-3">
                 <label class="form-label" for="image">Image Url</label>
                 <input class="form-control" type="text" id="image" name="campground[image]" required>

@@ -7,7 +7,8 @@ module.exports.campgroundSchema = Joi.object({
         //image: Joi.string().required(),
         location: Joi.string().required(),
         description: Joi.string().required(),
-    }).required() //has to be an object and has to be required
+    }).required(), //has to be an object and has to be required
+    deleteImages: Joi.array()
 })//validates before it gets to mongoose
 
 module.exports.reviewSchema = Joi.object({

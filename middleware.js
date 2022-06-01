@@ -13,6 +13,7 @@ module.exports.isLoggedIn = (req, res, next) => {
 }
 
 module.exports.isAuthor = async(req, res, next) => {
+    //authorization by comparing the .author with the req.user.id which stops if they do not match 
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if(!campground.author.equals(req.user._id)){
