@@ -11,9 +11,7 @@
 ### Future plans
 - [ ] Search funcionality
 - [ ] UI redesign
-- [ ] Review ratings
-- [ ] Review images
-- [ ] 
+- [ ] Review ratings and images
 
 
 The database is currently being hosted locally, but I will move it to the cloud via AWS during deployment.
