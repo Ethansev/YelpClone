@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== "production"){ //we've been running in development mode and this code requires the dotenv package 
+    require('dotenv').config();
+}
+
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
