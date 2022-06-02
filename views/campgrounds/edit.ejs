@@ -45,15 +45,33 @@
                     Looks good!
                 </div>
             </div>
-            <div class="mb-3">
+
+            <div>
+                <h5>Delete Images</h5>
+                <!-- <div class="row row-cols-1 row-cols md-4 g-4 mb-3"> I'm trying to turn it into a grid 
+                    <% campground.images.forEach((img, i) => { %>
+                        <div class="col">
+                            <div class="card">
+                                <img class="card-img" src="<%= img.thumbnail %>" alt="">
+                                <div class="card-img-overlay text-end pt-1 pe-2">
+                                    <label class="visually-hidden" for="image-<%= i %>">Delete Image</label>
+                                    <input class="form-check-input" type="checkbox" name="deleteImages[]" value="<%= img.filename %>" id="image-<%= i %>">
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div> -->
+
+                <!--This is the og image delete solution-->
                 <% campground.images.forEach(function(img, i) { %>
                 <img src="<%= img.thumbnail %>" class="img-thumbnail" alt="">
                 <div class="form-check-inline">
                     <input type="checkbox" id="image-<%= i %>" name="deleteImages[]" value="<%= img.filename %>">
                 </div>
                 <label for="image-<%= i %>">Delete</label>
-               <% }) %> 
+                <% }) %> 
             </div>
+
             <div class="mb-3">
                 <button class="btn btn-info">Update Campground</button>
             </div>
