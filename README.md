@@ -4,14 +4,15 @@
 ## Live Demo (coming soon)
 
 ### Technologies Used
-**Front-end Technologies**:  Bootstrap, ejs\
-**Back-end Technologies**:  Node.js, Express.js, MongoDB, NPM\
+**Front-end**:  Bootstrap, ejs\
+**Back-end**:  Node.js, Express.js, MongoDB, NPM\
 **Deployment**:  AWS Mongo Atlas, Heroku
 
 ### Future Plans
 - [ ] Search funcionality
 - [ ] UI redesign (polish)
 - [ ] Review ratings and images
+- [ ] Include information on National Parks
 
 ### Other Resources
 - Cloudinary is used for image cloud storage and fetching. Click [here](https://cloudinary.com/documentation) for official documentation. 

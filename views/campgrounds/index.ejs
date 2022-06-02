@@ -7,8 +7,12 @@
             <div class="card" mb-3>
                 <div class="row">
                     <div class="col-md-4"> <!-- 4 units out of 12 so basically a 3rd -->
-                        <!-- need to add logic to check if there are images to display in the first place-->
+                        <!-- logic to check if there are any images in the array, which used to this page because the code would try displaiyng an image that wasn't there-->
+                        <% if(campground.images.length){ %> 
                         <img class="img-fluid" alt="" src="<%= campground.images[0].url %>">
+                        <% }else{ %>
+                        <img class="img-fluid" alt="" src=""> <!-- I can add a default image if I wanted (should add one to the db and overwrite over it)-->
+                        <% } %> 
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
