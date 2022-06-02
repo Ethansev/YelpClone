@@ -12,15 +12,17 @@
 - [ ] Search funcionality
 - [ ] UI redesign (polish)
 - [ ] Review ratings and images
-- [ ] Include information on National Parks
+- [ ] Include information on National Parks (NPS provides their own API!)
+- [ ] Dark theme (because I can)
 
 ### Other Resources
 - Cloudinary is used for image cloud storage and fetching. Click [here](https://cloudinary.com/documentation) for official documentation. 
 - Mapbox is used for the map on each campground, based on 'location' data. Click [here](https://docs.mapbox.com/mapbox-gl-js/api/) for official documentation
 
+&nbsp;
 
-
-The database is currently being hosted locally, but I will move it to the cloud via AWS during deployment.
+Sidenote: 
+: The database is currently being hosted locally, but I will move it to the cloud via AWS during deployment.
 
 <!-- 
 Purpose 
