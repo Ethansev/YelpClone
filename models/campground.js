@@ -13,6 +13,9 @@ ImageSchema.virtual('thumbnail').get(function(){
     return this.url.replace('/upload', '/upload/w_200')
 });
 
+const opts = {toJSON: { virtuals: true } }; 
+//by default, mongoose does not include virtuals when we convert a document to JSON, so we set virtuals to true to include them
+
 const CampgroundSchema = new Schema({
     title: String,
     images: [ImageSchema],
@@ -41,10 +44,15 @@ const CampgroundSchema = new Schema({
             //object id from the review model
         }
     ]
-})
+}, opts);
+
+CampgroundSchema.virtual('properties.popUpMarkup').get(function(){ //creating a virtual property to use data for Mapbox (but not stored in our mongo db)
+    return `<strong><a href="/campgrounds/${this._id}">${this.title}</a></strong>
+    <p>${this.description.substring(0, 30)}...</p>`
+});
 
 CampgroundSchema.post('findOneAndDelete', async function(doc) { //anytime a campground is deleted, all of the related reviews are also deleted
-    console.log(doc);
+    console.log(doc);   
     if(doc){ //deletes all reviews where their id field is in the document.reviews array 
         await review.deleteMany({
             _id: {

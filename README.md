@@ -17,7 +17,7 @@
 
 ### Other Resources
 - Cloudinary is used for image cloud storage and fetching. Click [here](https://cloudinary.com/documentation) for official documentation. 
-- Mapbox is used for the map on each campground, based on 'location' data. Click [here](https://docs.mapbox.com/mapbox-gl-js/api/) for official documentation
+- Mapbox is used for the campground maps and map cluster, based on 'location' data. Click [here](https://docs.mapbox.com/mapbox-gl-js/api/) for official documentation
 
 &nbsp;
 

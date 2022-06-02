@@ -1,26 +1,40 @@
 <% layout('layouts/boilerplate') %>
-<h1>Register</h1>
-<form action="/register" method="POST" class="validated-form" novalidate>
-    <div class="mb-3">
-        <label class="form-label" for="username">Username</label>
-        <input class="form-control" type="text" id="username" name="username" required>
-        <div class="valid-feedback">
-            Looks good!
+
+<div class="container justify-content-center align-items-center mt-5">
+    <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+        <div class="card shadow">
+            <div class="card-body mt-3">
+                <h5 class="card-title">Sign Up for YelpClone</h5>
+                <p>Connect with your favorite campgrounds.</p>
+                <form action="/register" method="POST" class="validated-form" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username</label>
+                        <input class="form-control" type="text" id="username" name="username" autofocus required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="mb-3">  
+                        <label class="form-label" for="email">Email</label>
+                        <input class="form-control" type="email" id="email" name="email" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Password</label>
+                        <input class="form-control" type="password" id="password" name="password" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="d-grid mx-auto">
+                        <button class="btn btn-success">Register</button>
+                    </div>
+                    <p class="fs-6 text-muted float-end mt-2">Already on YelpClone? <a href="/login">Log in</a></p>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="mb-3">  
-        <label class="form-label" for="email">Email</label>
-        <input class="form-control" type="email" id="email" name="email" required>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-    <div class="mb-3">
-        <label class="form-label" for="password">Password</label>
-        <input class="form-control" type="password" id="password" name="password" required>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-    <button class="btn btn-success">Register</button>
-</form>
+</div>
+</div>
