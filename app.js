@@ -160,6 +160,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err }); //we're passing in err to use for ejs
 });
 
-app.listen(3000, () => {
-    console.log('SERVING ON PORT 3000')                                                                                                                     
+const port = process.env.PORT || 3000; //set automatically by heroku
+app.listen(port, () => {
+    console.log(`SERVING ON PORT ${port}`); 
 });
