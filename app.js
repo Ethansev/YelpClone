@@ -15,12 +15,16 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoStore = require('connect-mongo'); //this package uses mongo for our session store
 
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
+//const MongoStore = require('connect-mongo');
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+const dbUrl = 'mongodb://localhost:27017/yelp-camp';
+//mongodb://localhost:27017/yelp-camp
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     //useCreateIndex: true, can take this out in newer versions of mongoose
     useUnifiedTopology: true
@@ -43,7 +47,20 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public'))); //serves the public directory
 app.use(mongoSanitize());
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,//instead of resaving all sessions on db every time a user refreshes the page, we can lazy update the sesion by limiting a period of tie
+    crypto: {
+        secret: 'thisshouldbeabettersecret',
+    }
+});
+
+store.on("error", function(e){
+    console.log("SESSION STORE ERROR", e);
+})
+
 const sessionConfig = {
+    store, //store = 'store'
     name: 'session',
     secret:'thisshouldbeabettersecret',
     resave: false,
