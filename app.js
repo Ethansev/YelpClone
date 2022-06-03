@@ -22,7 +22,7 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 //const MongoStore = require('connect-mongo');
 
-const dbUrl = 'mongodb://localhost:27017/yelp-camp';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
 //mongodb://localhost:27017/yelp-camp
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -47,11 +47,13 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public'))); //serves the public directory
 app.use(mongoSanitize());
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret'
+
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,//instead of resaving all sessions on db every time a user refreshes the page, we can lazy update the sesion by limiting a period of tie
     crypto: {
-        secret: 'thisshouldbeabettersecret',
+        secret,
     }
 });
 
@@ -62,7 +64,7 @@ store.on("error", function(e){
 const sessionConfig = {
     store, //store = 'store'
     name: 'session',
-    secret:'thisshouldbeabettersecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
