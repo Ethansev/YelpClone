@@ -13,7 +13,8 @@ const methodOverride = require('method-override');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-const mongoSanitize = require('express-mongo-santize');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
@@ -43,11 +44,13 @@ app.use(express.static(path.join(__dirname, 'public'))); //serves the public dir
 app.use(mongoSanitize());
 
 const sessionConfig = {
+    name: 'session',
     secret:'thisshouldbeabettersecret',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true, //for security so client-side can't alter cookies
+        //secure: true, means cookies can only be configured in https
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //date.now() returns in milliseconds so we do this to expire in 1 week
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -55,7 +58,57 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-//initialize() initializes Passport (wow) and session() allows for persistent login sessions
+//scripts that we use for helmet 
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://api.mapbox.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+    "https://kit-free.fontawesome.com/",
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.mapbox.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.jsdelivr.net/",
+];
+const connectSrcUrls = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
+const fontSrcUrls = [];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'unsafe-inline'", "'self'", ...styleSrcUrls],
+            //styleSrc: ["'unsafe-inline'", "'self'", "https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://images5.alphacoders.com/114/thumb-1920-1140888.jpg",
+                "https://res.cloudinary.com/ethansev/",
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+        crossOriginEmbedderPolicy: false,
+    }), 
+);
+
+//initialize() initializes Passport (w0w) and session() allows for persistent login sessions
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
