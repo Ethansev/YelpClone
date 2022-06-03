@@ -2,11 +2,13 @@ mapboxgl.accessToken = mapToken;
 
 //this is the map for each individual campground page (show.ejs)
 const map = new mapboxgl.Map({
-  container: "map",
+  container: "cluster-map",
   style: "mapbox://styles/mapbox/light-v10",
   center: [-103.5917, 40.6699],
   zoom: 3,
 });
+
+map.addControl(new mapboxgl.NavigationControl());
 
 //this code is straight from the Mapbox documentation page
 map.on("load", () => {
