@@ -1,5 +1,5 @@
 # YelpClone
- Web application that demonstrates CRUD functionality to manipulate dynamic data via MongoDB, implementation of user authentication, and full-stack deployment via AWS Mongo Atlas & Heroku. Users can register, login, add new campgrounds, edit their existing campgrounds, leave reviews, and delete their own data. 
+ Web application that demonstrates CRUD functionality to manipulate dynamic data with MongoDB, implementation of user authentication, and full-stack deployment with  AWS Mongo Atlas & Heroku. Users can register, login, add new campgrounds, edit existing campgrounds, leave reviews, and delete content. 
 
 ## Live Demo
 https://yelpclone.ethanwin.com/
@@ -10,11 +10,11 @@ https://yelpclone.ethanwin.com/
 **Deployment**:  AWS Mongo Atlas, Heroku
 
 ### Future Plans
-- [ ] Search funcionality
-- [ ] UI redesign (polish)
+- [ ] Search
+- [ ] UI/UX redesign
 - [ ] Review ratings and images
-- [ ] Include information on National Parks (NPS provides their own API!)
-- [ ] Dark theme (because I can)
+- [ ] Include information on National Parks (NPS provides their own api!)
+- [ ] Dark theme
 
 ### Other Resources
 - Cloudinary is used for image cloud storage and fetching. Click [here](https://cloudinary.com/documentation) for official documentation. 
@@ -22,7 +22,8 @@ https://yelpclone.ethanwin.com/
 
 &nbsp;
 
-Sidenote: This project is officially deployed! I still need to seed new data because we setup a completely new database in the cloud, but I want to make some edits to the schemas for additional features. 
+**Sidenote**:\
+*This project is officially deployed! I still need to seed new data in atlas, but I'm making revisions to the database schemas first.*  
 
 <!-- 
 Purpose 
