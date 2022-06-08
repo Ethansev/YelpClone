@@ -1,3 +1,5 @@
+//This file validates the front-end with the Joi package :) 
+
 const BaseJoi = require('joi');
 const sanitizeHtml = require('sanitize-html');
 
@@ -15,7 +17,7 @@ const extension = (joi) => ({ //used to sanitize html and prevent cross-site scr
                     allowedAttributes: {}, //we're not allowing anything :D
                 });
                 if(clean !== value) return helpers.error('string.escapeHTML', { value })
-                //checks if there's a difference between the input passed in and the sanitize output which returns herlpers.error if something was removed
+                //checks if there's a difference between the input passed in and the sanitized output : returns helpers.error if something was removed
                 return clean;
             }
         }
@@ -28,7 +30,7 @@ module.exports.campgroundSchema = Joi.object({
     campground: Joi.object({
         title: Joi.string().required().escapeHTML(),
         price: Joi.number().required().min(0),
-        //image: Joi.string().required(),
+        //image: Joi.string().required(), --testing
         location: Joi.string().required().escapeHTML(),
         description: Joi.string().required().escapeHTML(),
     }).required(), //has to be an object and has to be required

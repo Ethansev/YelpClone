@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV !== "production"){ //we've been running in development mode and this code requires the dotenv package 
+if(process.env.NODE_ENV !== "production"){ 
     require('dotenv').config();
 }
 
@@ -14,7 +14,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
-const helmet = require('helmet');
+const helmet = require('helmet'); //this package secures HTTP headers 
 const MongoStore = require('connect-mongo'); //this package uses mongo for our session store
 
 const userRoutes = require('./routes/users');
@@ -22,11 +22,10 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 //const MongoStore = require('connect-mongo');
 
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp'; //lets us run on local mongodb if env file is missing
 //mongodb://localhost:27017/yelp-camp
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
-    //useCreateIndex: true, can take this out in newer versions of mongoose
     useUnifiedTopology: true
 });
 
@@ -51,7 +50,7 @@ const secret = process.env.SECRET || 'thisshouldbeabettersecret'
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
-    touchAfter: 24 * 60 * 60,//instead of resaving all sessions on db every time a user refreshes the page, we can lazy update the sesion by limiting a period of tie
+    touchAfter: 24 * 60 * 60, //updates the session after this period of time so we don't resave on user refresh
     crypto: {
         secret,
     }
@@ -68,16 +67,16 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: true,
     cookie: {
-        httpOnly: true, //for security so client-side can't alter cookies
-        //secure: true, means cookies can only be configured in https
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //date.now() returns in milliseconds so we do this to expire in 1 week
+        httpOnly: true, //security: client-side can't alter cookies
+        //secure: true, //means cookies can only be configured in https (disable this line during production!!)
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //date.now() returns in milliseconds - expires in 1 week
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
 app.use(session(sessionConfig));
 app.use(flash());
 
-//scripts that we use for helmet 
+//security: helmet will limit the sources that scripts can be run from aside from the following 
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     "https://api.tiles.mapbox.com/",
@@ -110,7 +109,6 @@ app.use(
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'unsafe-inline'", "'self'", ...styleSrcUrls],
-            //styleSrc: ["'unsafe-inline'", "'self'", "https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"],
             workerSrc: ["'self'", "blob:"],
             objectSrc: [],
             imgSrc: [
@@ -127,7 +125,7 @@ app.use(
     }), 
 );
 
-//initialize() initializes Passport (w0w) and session() allows for persistent login sessions
+//session() allows for persistent login sessions
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -135,7 +133,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser()); //serialization is how we store the user in the session
 passport.deserializeUser(User.deserializeUser()); 
 
-app.use((req, res, next) => { //flash message is accessed to templates automatically on every request. 
+app.use((req, res, next) => { //flash message can now be accessed by templates automatically on every request
     res.locals.currentUser = req.user; //all of our templates now have access to currentUser
     res.locals.success = req.flash('success'); 
     res.locals.error = req.flash('error');
@@ -144,7 +142,7 @@ app.use((req, res, next) => { //flash message is accessed to templates automatic
 
 app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes);
-app.use('/campgrounds/:id/reviews', reviewRoutes); //need to use mergeParams: true in reviews.js if we need access to this id
+app.use('/campgrounds/:id/reviews', reviewRoutes);
 
 app.get('/', (req, res ) => {
     res.render('home')
@@ -152,15 +150,15 @@ app.get('/', (req, res ) => {
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
-}) //for every path we're going to call this callback
+}) //for every path we're going to call this callback just in case we don't have the page that the user is trying to request :^)
 
 app.use((err, req, res, next) => {
     const {statusCode = 500} = err;
     if(!err.message) err.message = "Oh No, Something Went Wrong"
-    res.status(statusCode).render('error', { err }); //we're passing in err to use for ejs
+    res.status(statusCode).render('error', { err }); //we're passing in the error to be used on the front-end with ejs
 });
 
-const port = process.env.PORT || 3000; //set automatically by heroku
+const port = process.env.PORT || 3000; //set automatically by heroku (god bless)
 app.listen(port, () => {
     console.log(`SERVING ON PORT ${port}`); 
 });

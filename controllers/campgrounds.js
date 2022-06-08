@@ -13,8 +13,8 @@ module.exports.renderNewForm = (req, res) => {
     res.render('campgrounds/new');
 };
 
-module.exports.createCampground = async (req, res, next) => {    //if(!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
-    const geoData = await geocoder.forwardGeocode({
+module.exports.createCampground = async (req, res, next) => { 
+    const geoData = await geocoder.forwardGeocode({ //getting the coordinates from location with mapbox
         query: req.body.campground.location,
         limit: 1
     }).send();
@@ -25,7 +25,7 @@ module.exports.createCampground = async (req, res, next) => {    //if(!req.body.
     await campground.save();
     console.log(campground);
     req.flash('success', 'Successfuly made a new campground!');
-    res.redirect(`/campgrounds/${campground._id}`) //redirects us back to the campground at id after creating a new one. 
+    res.redirect(`/campgrounds/${campground._id}`) //redirects us back to the show page after creating a new campground 
     
 };
 
@@ -36,7 +36,7 @@ module.exports.showCampground = async (req, res) => {
             path: 'author'
         }
     }).populate('author');
-    // ^ populates all the user reviews, then populate the author of each review, and lastly populate the one author on the campground
+    // ^ populates all the user reviews, then populate the author of each review, and lastly populate the one author of campground
     if(!campground){
         req.flash('error', 'Cannot find that campground!');
         return res.redirect('/campgrounds')
@@ -45,7 +45,7 @@ module.exports.showCampground = async (req, res) => {
 };
 
 module.exports.renderEditForm = async (req,res) => {
-    //first checks if the campground exists, if it does the function then checks if the user and author are the same person to authorize them to make edits
+    //first checks if the campground exists at the id. If it does, the function then checks if the user and author are the same person which authorizes them to make edits
     const campground = await Campground.findById(req.params.id);
     if(!campground){
         req.flash('error', 'Cannot find that campground!');
@@ -55,13 +55,11 @@ module.exports.renderEditForm = async (req,res) => {
 };
 
 module.exports.updateCampground = async(req, res) => {
-    //we're sending a put request to update a campground at the specific id in the database
     const { id } = req.params;
 
-    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) //we're spreading the object
+    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) //... spreads the object
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.images.push(...imgs); //use push so we don't overwrite existing data
-    //^ doesn't pass in an array, but takes the data in the array and passes it to push
     if(req.body.deleteImages){
         for(let filename of req.body.deleteImages){
             await cloudinary.uploader.destroy(filename); //deletes the image file from cloudinary
@@ -76,7 +74,6 @@ module.exports.updateCampground = async(req, res) => {
 };
 
 module.exports.deleteCampground = async (req, res) => {
-    //deletes the object from our campgrounds collection
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted campground!');

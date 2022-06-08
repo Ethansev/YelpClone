@@ -13,17 +13,16 @@ https://yelpclone.ethanwin.com/
 - [ ] Search
 - [ ] UI/UX redesign
 - [ ] Review ratings and images
-- [ ] Include information on National Parks (NPS provides their own api!)
+- [ ] Include information on National Parks (NPS provides an api!)
 - [ ] Dark theme
 
 ### Other Resources
-- Cloudinary is used for image cloud storage and fetching. Click [here](https://cloudinary.com/documentation) for official documentation. 
-- Mapbox is used for the campground maps and map cluster, based on 'location' data. Click [here](https://docs.mapbox.com/mapbox-gl-js/api/) for official documentation
+- **Cloudinary** is used for image cloud storage and fetching. Click [here](https://cloudinary.com/documentation) for official documentation. 
+- **Mapbox** is used for the campground maps and map cluster, based on 'location' data. Click [here](https://docs.mapbox.com/mapbox-gl-js/api/) for official documentation
 
 &nbsp;
-
 **Sidenote**:\
-*This project is officially deployed! I still need to seed new data in atlas, but I'm making revisions to the database schemas first.*  
+*This project is officially deployed! I still need to seed new data in atlas, but I'm making revisions to the database models first.*  
 
 <!-- 
 Purpose 
