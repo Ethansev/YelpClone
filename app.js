@@ -17,6 +17,11 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet'); //this package secures HTTP headers 
 const MongoStore = require('connect-mongo'); //this package uses mongo for our session store
 
+//models to use mongodb data
+const Campground = require('./models/campground');
+const Review = require('./models/review');
+
+//routes! 
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
@@ -140,12 +145,14 @@ app.use((req, res, next) => { //flash message can now be accessed by templates a
     next();
 })
 
-app.use('/', userRoutes);
+app.use('/', userRoutes)
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/reviews', reviewRoutes);
 
-app.get('/', (req, res ) => {
-    res.render('home')
+app.get('/', async (req, res ) => {
+    const campgrounds = await Campground.find({});
+    const reviews = await Review.find({});
+    res.render('home', { campgrounds, reviews });
 });
 
 app.all('*', (req, res, next) => {

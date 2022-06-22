@@ -1,24 +1,5 @@
-.top-banner{
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-        url(https://images5.alphacoders.com/114/thumb-1920-1140888.jpg);
-    height: 40vh;
-}
-.logo{
-    color: white;
-}
-.top-nav{
+.navbar{
     padding: 2rem 3rem 2rem;
-}
-.hero-content{
-    padding-top: 60px;
-}
-
-h2{
-    font-weight: 700;
-}
-.section-block{
-    padding-top: 3rem;
-    padding-bottom: 3rem;
 }
 
 .nav-link{
@@ -69,13 +50,9 @@ h2{
     color: #ffffff;
     margin-left: 1rem;
     border-bottom: 0.25rem solid transparent;
-    /* border: 2px solid red; */
+    /*border: 2px solid red;*/
     text-decoration: none;
     border-radius: 3px;
-}
-
-.nav-link-button span{
-
 }
 
 .btn-secondary, .btn-secondary:hover{
