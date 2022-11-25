@@ -3,7 +3,7 @@
 
  This project is currently on pause so that I can redo it in React (or maybe Vue)
 
-## Live Demo
+### Live Demo
 https://yelpclone.ethanwin.com/
 
 ## Technologies Used
