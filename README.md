@@ -7,7 +7,7 @@
 https://yelpclone.ethanwin.com/
 
 ## Technologies Used
-**Front-end**:  Bootstrap, ejs\
+**Front-end**:  HTML, CSS, Javascript, Bootstrap, ejs\
 **Back-end**:  Node.js, Express.js, MongoDB, NPM\
 **Deployment**:  AWS Mongo Atlas, Heroku
 
