@@ -12,14 +12,14 @@ https://yelpclone.ethanwin.com/
 **Deployment**:  AWS Mongo Atlas, Heroku
 
 ## Future Plans
-- [ ] Search
+- [ ] Search functionality
 - [ ] UI/UX redesign
 - [ ] Review ratings and images
 - [ ] Include information on National Parks (NPS provides an api!)
 - [ ] Dark theme
 
 ## Other Resources
-- **Cloudinary** is used for image cloud storage and fetching. Click [here](https://cloudinary.com/documentation) for official documentation. 
+- **Cloudinary** is used for image cloud storage and image fetching. Click [here](https://cloudinary.com/documentation) for official documentation. 
 - **Mapbox** is used for the campground maps and map cluster, based on 'location' data. Click [here](https://docs.mapbox.com/mapbox-gl-js/api/) for official documentation
 
 &nbsp;
