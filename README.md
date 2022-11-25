@@ -23,7 +23,7 @@ https://yelpclone.ethanwin.com/
 - **Mapbox** is used for the campground maps and map cluster, based on 'location' data. Click [here](https://docs.mapbox.com/mapbox-gl-js/api/) for official documentation
 
 &nbsp;
-### **Sidenote**:\
+### **Sidenote**:
 *This project is officially deployed! I still need to seed new data in atlas, but I'm making revisions to the database models first.*  
 
 I got a position as a full stack software engineer! This project will be put on pause until I free up more time. I'll refactor this into React and probably a C# backend for practice. 
